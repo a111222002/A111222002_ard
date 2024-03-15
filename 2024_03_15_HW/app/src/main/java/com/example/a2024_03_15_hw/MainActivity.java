@@ -24,19 +24,21 @@ public class MainActivity extends AppCompatActivity {
         String inputAccount = edtAccount.getText().toString().trim();
         String inputPassword = edtPassword.getText().toString().trim();
 
-        // 檢查帳號是否符合信箱格式
         if (!Patterns.EMAIL_ADDRESS.matcher(inputAccount).matches()) {
             txvResult.setText(getString(R.string.the_final) + ": 帳號格式錯誤，請輸入有效的電子郵件地址");
             return;
         }
-
-        // 檢查密碼是否含有非數字字符
         if (!inputPassword.matches(".*\\D.*")) {
             txvResult.setText(getString(R.string.the_final) + ": 密碼格式錯誤，請確保密碼包含至少一個非數字字符");
             return;
         }
+        String correctAccount = "123456789@example.com";
+        String correctPassword = "Password123";
 
-        // 帳號和密碼符合格式，顯示通過訊息
-        txvResult.setText(getString(R.string.the_final) + ": 帳號密碼格式正確");
+        if (inputAccount.equals(correctAccount) && inputPassword.equals(correctPassword)) {
+            txvResult.setText(getString(R.string.the_final) + ": 登入成功");
+        } else {
+            txvResult.setText(getString(R.string.the_final) + ": 帳號密碼錯誤");
+        }
     }
 }
