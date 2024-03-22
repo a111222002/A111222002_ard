@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.ui_test"
+    namespace = "com.example.ui_test2"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.ui_test"
+        applicationId = "com.example.ui_test2"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
