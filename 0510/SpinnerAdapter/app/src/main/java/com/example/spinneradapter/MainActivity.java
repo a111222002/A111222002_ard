@@ -4,13 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private String[] courses,desserts;
     private Spinner spinnerCourse,spinnerDessert;
@@ -39,8 +41,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String course = spinnerCourse.getSelectedItem().toString();
                 String dessert = spinnerDessert.getSelectedItem().toString();
-                TextView output = (TextView) findViewById(R.id.textView);
+                TextView output = (TextView) findViewById(R.id.lblOutput);
                 output.setText("Course: " + course + "\nDessert: " + dessert);
+            }
+        });
+
+        Button btnModify = findViewById(R.id.button2);
+        btnModify.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                desserts[4]="草莓蛋糕";
+                adapterDessert.notifyDataSetChanged();
             }
         });
     }
