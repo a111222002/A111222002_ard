@@ -11,9 +11,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
+public class MainActivity extends AppCompatActivity implements DialogInterface.OnMultiChoiceClickListener {
     private String[] items={"Samsung","OPPO","APPLE","XIAOMI"};
     private boolean[] checkedItems = new boolean[items.length];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         .show();
             }
         });
-        String[] colors = {"Red", "Green", "Blue", "Yellow"};
-        Button btnColor = (Button) findViewById(R.id.btnColor);
+
+        Button btnColor = findViewById(R.id.btnColor);
         btnColor.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -90,37 +91,44 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 builder.show();
             }
         });
+
         Button btnSelect = findViewById(R.id.btnSelect);
         btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Select")
-                        .setPositiveButton("check", MainActivity.this)
-                        .setNegativeButton("cancel", MainActivity.this)
-                        .setMultiChoiceItems(items, checkedItems, null)
+                        .setPositiveButton("check", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                StringBuilder msg = new StringBuilder();
+                                for (int i = 0; i < items.length; i++) {
+                                    if (checkedItems[i]) {
+                                        msg.append(items[i]).append(" ");
+                                    }
+                                }
+                                TextView tv = findViewById(R.id.txvShow);
+                                tv.setText(msg.toString()); // 移动这行代码到这里
+                                Toast.makeText(MainActivity.this, msg.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Do nothing or handle cancel action
+                            }
+                        })
+                        .setMultiChoiceItems(items, checkedItems, MainActivity.this)
                         .show();
             }
         });
     }
 
+
     @Override
-    public void onClick(DialogInterface dialog, int which) {
-        switch (which) {
-            case DialogInterface.BUTTON_POSITIVE:
-                StringBuilder msg = new StringBuilder();
-                for (int i = 0; i < items.length; i++) {
-                    if (checkedItems[i]) {
-                        msg.append(items[i]).append(" ");
-                    }
-                }
-                TextView tv = findViewById(R.id.txvShow);
-                tv.setText(msg.toString()); // 移动这行代码到这里
-                Toast.makeText(MainActivity.this, msg.toString(), Toast.LENGTH_SHORT).show();
-                break;
-            case DialogInterface.BUTTON_NEGATIVE:
-                // Handle negative button click if needed
-                break;
-        }
+    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+        Toast.makeText(MainActivity.this,
+                items[which] + (isChecked?"chose": "none choose"),
+                Toast.LENGTH_SHORT).show();
     }
 }
